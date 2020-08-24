@@ -1,5 +1,7 @@
 /* global plupload */
-import RSVP from 'rsvp';
+import Ember from 'ember';
+
+var RSVP = Ember.RSVP;
 
 export default function (name, filterBody) {
   plupload.addFileFilter(name, function (configValue, file, callback) {

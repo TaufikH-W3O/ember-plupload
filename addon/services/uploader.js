@@ -1,10 +1,12 @@
-import { A } from '@ember/array';
-import Service from '@ember/service';
-import { get, set, computed } from '@ember/object';
+import Ember from 'ember';
 import UploadQueue from '../system/upload-queue';
 import flatten from '../system/flatten';
 
-export default Service.extend({
+var get = Ember.get;
+var set = Ember.set;
+var computed = Ember.computed;
+
+export default Ember.Service.extend({
 
   /**
     @private
@@ -12,9 +14,8 @@ export default Service.extend({
     accessed by name via the `find` method.
    */
   init() {
-    this._super(...arguments);
-    set(this, 'queues', new Map());
-    set(this, 'all', A());
+    set(this, 'queues', Ember.Map.create());
+    set(this, 'all', Ember.A());
   },
 
   files: computed('all.@each.length', {
@@ -25,7 +26,7 @@ export default Service.extend({
 
   size: computed('all.@each.size', {
     get() {
-      return A(get(this, 'all').getEach('size')).reduce(function (E, x) {
+      return Ember.A(get(this, 'all').getEach('size')).reduce(function (E, x) {
         return E + x;
       }, 0);
     }
@@ -33,13 +34,13 @@ export default Service.extend({
 
   loaded: computed('all.@each.loaded', {
     get() {
-      return A(get(this, 'all').getEach('loaded')).reduce(function (E, x) {
+      return Ember.A(get(this, 'all').getEach('loaded')).reduce(function (E, x) {
         return E + x;
       }, 0);
     }
   }),
 
-  progress: computed('size', 'loaded', function () {
+  progress: Ember.computed('size', 'loaded', function () {
     let percent = get(this, 'loaded') / get(this, 'size') || 0;
     return Math.floor(percent * 100);
   }),
@@ -55,9 +56,8 @@ export default Service.extend({
   findOrCreate(name, component, config) {
     var queue;
 
-    let queues = get(this, 'queues');
-    if (queues.has(name)) {
-      queue = queues.get(name);
+    if (get(this, 'queues').has(name)) {
+      queue = get(this, 'queues').get(name);
       if (config != null) {
         set(queue, 'target', component);
         queue.configure(config);
@@ -68,7 +68,7 @@ export default Service.extend({
         target: component
       });
       get(this, 'all').pushObject(queue);
-      queues.set(name, queue);
+      get(this, 'queues').set(name, queue);
       queue.configure(config);
     }
     return queue;

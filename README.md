@@ -1,5 +1,7 @@
 # {{pl-uploader}} [![Build Status](https://travis-ci.org/tim-evans/ember-plupload.svg)](https://travis-ci.org/tim-evans/ember-plupload) [![Code Climate](https://codeclimate.com/github/tim-evans/ember-plupload/badges/gpa.svg)](https://codeclimate.com/github/tim-evans/ember-plupload) [![Ember Observer Score](http://emberobserver.com/badges/ember-plupload.svg)](http://emberobserver.com/addons/ember-plupload)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tim-evans/ember-plupload.svg)](https://greenkeeper.io/)
+
 {{pl-uploader}} is an ember component that provides an API for [Plupload](http://www.plupload.com/). Uploads are persistent accross routes in your application (they continue in the background).
 
 To use the uploader, you must provide a name (for proper queueing and bundling of resources), and an upload URL.
@@ -59,12 +61,8 @@ The cleanest approach to configure uploaders is to create a component that encap
 For example, creating an image uploader that uploads images to your API server would look like:
 
 ```handlebars
-{{#pl-uploader
-  for='upload-image'
-  extensions='jpg jpeg png gif'
-  onfileadd=(action 'uploadImage')
-as |queue dropzone|}}
-  <div class='dropzone' id={{dropzone.id}}>
+{{#pl-uploader for="upload-image" extensions="jpg jpeg png gif" onfileadd="uploadImage" as |queue dropzone|}}
+  <div class="dropzone" id={{dropzone.id}}>
     {{#if dropzone.active}}
       {{#if dropzone.valid}}
         Drop to upload
@@ -79,7 +77,7 @@ as |queue dropzone|}}
         {{#if dropzone.enabled}}
           Drag and drop images onto this area to upload them or
         {{/if}}
-        <a id='upload-image'>Add an Image.</a>
+        <a id="upload-image">Add an Image.</a>
       </p>
     {{/if}}
   </div>
@@ -300,7 +298,7 @@ class S3Direct
 
   def to_json
     {
-      url: "https://s3.amazonaws.com/#{@options[:bucket]}",
+      url: "https://#{@options[:bucket]}.s3.amazonaws.com",
       credentials: {
         AWSAccessKeyId: @access_key,
         policy:         policy,
@@ -360,44 +358,27 @@ export default Ember.Route.extend({
 });
 ```
 
-## Installation
+# Installation
 
 * `ember install ember-plupload`
 
-### Linting
+## Running
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+* `ember server`
+* Visit your app at http://localhost:4200.
 
-### Running tests
+## Running Tests
 
-* `ember test` – Runs the test suite on the current Ember version
-* `ember test --server` – Runs the test suite in "watch mode"
-* `ember try:each` – Runs the test suite against multiple Ember versions
+* `ember test`
+* `ember test --server`
 
-### Running the dummy application
+# Contributing
 
-* `ember serve`
-* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
+Contributors are welcome! Please provide a reproducible test case. Details will be worked out on a case-per-case basis. Maintainers will get in touch when they can, so delays are possible. For contribution guidelines, see the [code of conduct](https://github.com/tim-evans/ember-plupload/blob/master/CONDUCT.md).
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
-## Contributing
-
-Contributors are welcome! Please provide a reproducible test case.
-Details will be worked out on a case-per-case basis.
-Maintainers will get in touch when they can, so delays are possible.
-For contribution guidelines,
-see the [code of conduct](https://github.com/tim-evans/ember-plupload/blob/master/CONDUCT.md).
-
-### Publishing
+## Publishing
 
 * `ember github-pages:commit --message "Releasing docs"`
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
-
-License
-------------------------------------------------------------
-
-This project is licensed under the [MIT License](LICENSE.md).

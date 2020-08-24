@@ -53,7 +53,7 @@ All notable changes to this project will be documented in this file. See [standa
 * Update blueprints to work with new function signature for `addBowerPackageToProject`. See https://github.com/ember-cli/ember-cli/pull/4643 for more information on these changes. Courtesy of @deathbearbrown
 
 ## 1.13.3 (August 12, 2015)
-* Update plupload to [2.1.8](https://github.com/moxiecode/plupload/releases/tag/v2.1.8). Included below are the changelog to mOxie and plupload:
+* Update plupload to [2.1.8](https://github.com/moxiecode/plupload/releases/tag/v2.1.8). Included below are the changelog to moxie and plupload:
 
 #### Plupload v2.1.4
 * Fix: don't cancel current upload on generic file error

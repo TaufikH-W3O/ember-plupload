@@ -1,14 +1,14 @@
-import jQuery from 'jquery';
-import { on } from '@ember/object/evented';
-import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { bind, scheduleOnce } from '@ember/runloop';
-import { get, set, computed, observer } from '@ember/object';
+import Ember from 'ember';
 import DinoSheet from 'dinosheets';
 import trim from '../system/trim';
 import w from '../computed/w';
 
+var get = Ember.get;
+var set = Ember.set;
 var keys = Object.keys;
+
+var bind = Ember.run.bind;
+var computed = Ember.computed;
 
 var isDragAndDropSupported = (function () {
   var supported = null;
@@ -34,14 +34,17 @@ var sharedStyleSheet = function () {
 
 var slice = Array.prototype.slice;
 
-export default Component.extend({
+export default Ember.Component.extend({
   classNames: ['pl-uploader'],
 
   name: null,
+
   'for-dropzone': null,
+
   onfileadd: null,
   onerror: null,
-  uploader: service(),
+
+  uploader: Ember.inject.service(),
 
   /**
     A cascading list of runtimes to fallback on to
@@ -132,26 +135,19 @@ export default Component.extend({
     }
   }),
 
-  didInsertElement() {
-    this._super(...arguments);
-    scheduleOnce('afterRender', this, 'attachUploader');
-    scheduleOnce('afterRender', this, 'setupDragListeners');
-  },
+  didInsertElement: Ember.on('didInsertElement', function() {
+    Ember.run.scheduleOnce('afterRender', this, 'attachUploader');
+    Ember.run.scheduleOnce('afterRender', this, 'setupDragListeners');
+  }),
 
   attachUploader() {
-    let uploader = get(this, 'uploader');
-    let name = get(this, 'name');
-    let queue = uploader.findOrCreate(name, this, get(this, 'config'));
-
+    var uploader = get(this, 'uploader');
+    var queue = uploader.findOrCreate(get(this, 'name'), this, get(this, 'config'));
     set(this, 'queue', queue);
 
-    // Send up the pluploader object so the app implementing this component has access to it
-    let pluploader = queue.get('queues.firstObject');
-
-    if (this.onInitOfUploader) {
-      this.onInitOfUploader(pluploader, queue, this);
-    }
-
+    // Send up the pluploader object so the app implementing this component as has access to it
+    var pluploader = queue.get('queues.firstObject');
+    this.sendAction('onInitOfUploader', pluploader);
     this._dragInProgress = false;
     this._invalidateDragData();
   },
@@ -165,48 +161,38 @@ export default Component.extend({
       };
 
       keys(handlers).forEach(function (key) {
-        jQuery(document).on(key, '#' + dropzoneId, handlers[key]);
+        Ember.$(document).on(key, '#' + dropzoneId, handlers[key]);
       });
     }
   },
 
-  willDestroyElement() {
-    this.detachUploader();
-    this.teardownDragListeners();
-  },
-
-  detachUploader() {
-    let queue = get(this, 'queue');
-
+  detachUploader: Ember.on('willDestroyElement', function () {
+    var queue = get(this, 'queue');
     if (queue) {
       queue.orphan();
       set(this, 'queue', null);
     }
-
     let sheet = sharedStyleSheet();
-
     sheet.css(`#${get(this, 'dropzone.id')} *`, null);
     sheet.applyStyles();
-  },
+  }),
 
-  teardownDragListeners() {
-    let dropzoneId = get(this, 'dropzone.id');
-
+  teardownDragListeners: Ember.on('willDestroyElement', function () {
+    var dropzoneId = get(this, 'dropzone.id');
     if (dropzoneId) {
-      let handlers = this.eventHandlers;
-
+      var handlers = this.eventHandlers;
       keys(handlers).forEach(function (key) {
-        jQuery(document).off(key, '#' + dropzoneId, handlers[key]);
+        Ember.$(document).off(key, '#' + dropzoneId, handlers[key]);
       });
       this.eventHandlers = null;
     }
-  },
+  }),
 
   dragData: null,
   enteredDropzone({ originalEvent: evt }) {
     if (this._dragInProgress === false) {
-      this._dragInProgress = true;
-      this.activateDropzone(evt);
+        this._dragInProgress = true;
+        this.activateDropzone(evt);
     }
   },
 
@@ -219,59 +205,52 @@ export default Component.extend({
 
   activateDropzone(evt) {
     let sheet = sharedStyleSheet();
-
     sheet.css(`#${get(this, 'dropzone.id')} *`, {
       pointerEvents: 'none'
     });
-
-    scheduleOnce('render', sheet, 'applyStyles');
+    Ember.run.scheduleOnce('render', sheet, 'applyStyles');
     set(this, 'dragData', get(evt, 'dataTransfer'));
   },
 
   deactivateDropzone() {
     let sheet = sharedStyleSheet();
-
     sheet.css(`#${get(this, 'dropzone.id')} *`, null);
-    scheduleOnce('render', sheet, 'applyStyles');
+    Ember.run.scheduleOnce('render', sheet, 'applyStyles');
 
     this._dragInProgress = false;
     set(this, 'dragData', null);
   },
 
-  _invalidateDragData: observer('queue.length', function () {
+  _invalidateDragData: Ember.observer('queue.length', function () {
     // Looks like someone dropped a file
     const filesAdded = get(this, 'queue.length') > this._queued;
     const filesDropped = get(this, 'queue.length') === this._queued;
-
     if ((filesAdded || filesDropped) && get(this, 'dragData')) {
       this.deactivateDropzone();
     }
-
     this._queued = get(this, 'queue.length');
-    scheduleOnce('afterRender', this, 'refreshQueue');
+    Ember.run.scheduleOnce('afterRender', this, 'refreshQueue');
   }),
 
   refreshQueue() {
-    let queue = this.get('queue');
+    var queue = this.get('queue');
 
     if (queue) {
       queue.refresh();
     }
   },
 
-  setDragDataValidity: observer('dragData', on('init', function () {
-    if (!isDragAndDropSupported(get(this, 'runtimes'))) {
-      return;
-    }
+  setDragDataValidity: Ember.observer('dragData', Ember.on('init', function () {
+    if (!isDragAndDropSupported(get(this, 'runtimes'))) { return; }
 
-    let data = get(this, 'dragData');
-    let extensions = get(this, 'extensions');
-    let isValid = true;
+    var data = get(this, 'dragData');
+    var extensions = get(this, 'extensions');
+    var isValid = true;
 
     // Validate
     if (extensions.length) {
       isValid = slice.call(get(data || {}, 'items') || []).every(function (item) {
-        let fileType = trim(item.type).toLowerCase();
+        var fileType = trim(item.type).toLowerCase();
         return extensions.any(function (ext) {
           return (new RegExp(ext + '$')).test(fileType);
         });

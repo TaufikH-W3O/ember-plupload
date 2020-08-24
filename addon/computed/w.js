@@ -1,12 +1,13 @@
-import { A } from '@ember/array';
-import { w } from '@ember/string';
-import { computed } from '@ember/object';
+import Ember from 'ember';
+
+var w = Ember.String.w;
+var computed = Ember.computed;
 
 var toArray = function (value) {
   if (typeof value === 'string') {
     value = w(value);
   }
-  return A(value);
+  return Ember.A(value);
 };
 
 export default function(defaultValue) {

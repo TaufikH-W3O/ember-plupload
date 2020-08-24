@@ -1,13 +1,10 @@
 /* global moxie */
-import { assert } from '@ember/debug';
-import { run } from '@ember/runloop';
-import { assign } from '@ember/polyfills';
 import Ember from 'ember';
 
 function FakeFile(attrs) {
   this.id = Ember.generateGuid();
   attrs.plupload.total.size += attrs.size;
-  assign(this, attrs);
+  Ember.merge(this, attrs);
 }
 
 FakeFile.prototype = {
@@ -29,7 +26,7 @@ FakeFile.prototype = {
       return `${key}: ${headers[key]}`;
     }).join('\n');
 
-    run(() => {
+    Ember.run(() => {
       this.queue.fileUploaded(this.plupload, this, {
         status,
         responseHeaders,
@@ -44,7 +41,7 @@ FakeFile.prototype = {
 
   set progress(value) {
     this.percent = value;
-    run(() => {
+    Ember.run(() => {
       this.plupload.total.loaded += this.size * (value / 100);
       this.queue.progressDidChange(this.plupload, this);
     });
@@ -55,10 +52,10 @@ FakeFile.prototype = {
   }
 };
 
-moxie.file.FileReader = function () {};
-moxie.file.FileReader.prototype = {
+moxie.FileReader = function () {};
+moxie.FileReader.prototype = {
   read(type, source) {
-    assert(`"${source.name}" doesn't have a ${type} for the file to read
+    Ember.assert(`"${source.name}" doesn't have a ${type} for the file to read
 When calling addFiles(), provide the following property:
 
 addFiles(this.container, "${source.queueName}", {
@@ -92,23 +89,18 @@ addFiles(this.container, "${source.queueName}", {
   }
 };
 
-export function addFiles(queue, ...files) {
-  let queueMap = queue.get('queues');
-  let finalQueue = null;
-  for (let queue of queueMap.values()) {
-    finalQueue = queue;
-  }
-  if (finalQueue === null) {
-    throw new Error(`Queue does not exist`);
-  }
-  let plupload = finalQueue;
-  let name = finalQueue.name;
+export function addFiles(owner, name, ...files) {
+  let uploader = owner.lookup('service:uploader');
+  let queue = uploader.findOrCreate(name);
 
+  Ember.assert(`To add a file, you must have queue with the name='${name}'`, queue);
+
+  let plupload = queue.get('queues.lastObject');
   files = files.map(function (file) {
-    return new FakeFile(assign({ queue, plupload, queueName: name }, file));
+    return new FakeFile(Ember.merge({ queue, plupload, queueName: name }, file));
   });
 
-  run(function () {
+  Ember.run(function () {
     queue.filesAdded(plupload, files);
   });
 

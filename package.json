@@ -1,71 +1,109 @@
 {
-  "name": "ember-plupload",
-  "version": "1.13.21",
-  "scripts": {
-    "lint:hbs": "ember-template-lint .",
-    "lint:js": "eslint .",
-    "start": "ember serve",
-    "test": "ember test",
-    "build": "ember build",
-    "test:all": "ember try:each",
-    "release": "standard-version"
+  "_from": "ember-plupload@1.13.21",
+  "_id": "ember-plupload@1.13.21",
+  "_inBundle": false,
+  "_integrity": "sha512-xiEqtPFKG6Q1h9Iau3mXOYBvc33+qqtwZ2fW1YPdu6QZnZ3AIyK6PtTnIxJR0J1lRaPDz7lnj+y7igX79/IH1g==",
+  "_location": "/ember-plupload",
+  "_phantomChildren": {
+    "array-equal": "1.0.0",
+    "blank-object": "1.0.2",
+    "broccoli-plugin": "1.3.1",
+    "debug": "2.6.9",
+    "exists-sync": "0.0.4",
+    "fast-ordered-set": "1.0.3",
+    "fs-tree-diff": "0.5.9",
+    "heimdalljs": "0.2.6",
+    "merge-trees": "1.0.1",
+    "minimatch": "3.0.4",
+    "mkdirp": "0.5.5",
+    "path-posix": "1.0.0",
+    "rimraf": "2.7.1",
+    "symlink-or-copy": "1.3.1",
+    "walk-sync": "0.3.4"
   },
-  "engines": {
-    "node": "8.* || >= 10.*"
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "ember-plupload@1.13.21",
+    "name": "ember-plupload",
+    "escapedName": "ember-plupload",
+    "rawSpec": "1.13.21",
+    "saveSpec": null,
+    "fetchSpec": "1.13.21"
   },
-  "devDependencies": {
-    "@ember/jquery": "^0.6.1",
-    "@ember/optional-features": "^0.7.0",
-    "broccoli-asset-rev": "^3.0.0",
-    "ember-cli": "~3.12.0",
-    "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-github-pages": "^0.2.2",
-    "ember-cli-htmlbars": "^3.1.0",
-    "ember-cli-htmlbars-inline-precompile": "^2.1.0",
-    "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-release": "0.2.9",
-    "ember-cli-sass": "^10.0.1",
-    "ember-cli-template-lint": "^1.0.0-beta.1",
-    "ember-cli-uglify": "^3.0.0",
-    "ember-cli-update": "^0.39.0",
-    "ember-disable-prototype-extensions": "^1.1.3",
-    "ember-inline-svg": "0.3.0",
-    "ember-load-initializers": "^2.0.0",
-    "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-qunit": "^4.5.1",
-    "ember-resolver": "^5.2.1",
-    "ember-source": "~3.12.0",
-    "ember-source-channel-url": "^2.0.1",
-    "ember-try": "^1.2.1",
-    "eslint-plugin-ember": "^6.10.0",
-    "eslint-plugin-node": "^9.1.0",
-    "loader.js": "^4.7.0",
-    "qunit-dom": "^0.9.0",
-    "sass": "^1.22.10",
-    "standard-version": "^7.0.0"
-  },
-  "description": "An uploader component for Ember apps",
-  "keywords": [
-    "ember-addon",
-    "file-upload"
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
   ],
-  "repository": "https://github.com/tim-evans/ember-plupload",
-  "license": "MIT",
-  "author": "Tim Evans",
+  "_resolved": "https://registry.npmjs.org/ember-plupload/-/ember-plupload-1.13.21.tgz",
+  "_shasum": "a2b8cfd14d935142c85259ac743cadb93397070c",
+  "_spec": "ember-plupload@1.13.21",
+  "_where": "/home/w3o-paska/workspace/redwhite-marketplace/client",
+  "author": {
+    "name": "Tim Evans"
+  },
+  "bugs": {
+    "url": "https://github.com/tim-evans/ember-plupload/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "broccoli-funnel": "^1.2.0",
+    "broccoli-merge-trees": "^2.0.0",
+    "ember-cli-babel": "^6.12.0",
+    "exists-sync": "^0.0.4",
+    "fastboot-transform": "^0.1.0",
+    "rsvp": "^4.6.1"
+  },
+  "deprecated": false,
+  "description": "An uploader component for Ember apps",
+  "devDependencies": {
+    "broccoli-asset-rev": "^2.4.5",
+    "ember-cli": "2.16.1",
+    "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-github-pages": "0.1.2",
+    "ember-cli-htmlbars": "^2.0.1",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.0",
+    "ember-cli-inject-live-reload": "^1.4.1",
+    "ember-cli-qunit": "^3.1.2",
+    "ember-cli-release": "0.2.9",
+    "ember-cli-sass": "6.2.0",
+    "ember-cli-shims": "^1.0.2",
+    "ember-cli-uglify": "^2.0.0",
+    "ember-disable-prototype-extensions": "^1.1.0",
+    "ember-inline-svg": "0.1.11",
+    "ember-load-initializers": "^1.0.0",
+    "ember-resolver": "^4.1.0",
+    "ember-source": "~2.13.2",
+    "ember-try": "^0.2.13",
+    "loader.js": "^4.2.3",
+    "standard-version": "^4.3.0"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "dependencies": {
-    "broccoli-funnel": "^2.0.2",
-    "broccoli-merge-trees": "^3.0.2",
-    "ember-cli-babel": "^7.10.0",
-    "ember-copy": "^1.0.0",
-    "exists-sync": "^0.1.0",
-    "fastboot-transform": "^0.1.3",
-    "rsvp": "^4.8.5"
-  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
-  }
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "homepage": "https://github.com/tim-evans/ember-plupload#readme",
+  "keywords": [
+    "ember-addon",
+    "file-upload"
+  ],
+  "license": "MIT",
+  "name": "ember-plupload",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tim-evans/ember-plupload.git"
+  },
+  "scripts": {
+    "build": "ember build",
+    "release": "standard-version",
+    "start": "ember server",
+    "test": "ember try:testall"
+  },
+  "version": "1.13.21"
 }

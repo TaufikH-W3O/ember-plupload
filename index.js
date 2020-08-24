@@ -1,3 +1,4 @@
+/* jshint node: true */
 'use strict';
 
 const Funnel = require('broccoli-funnel');
@@ -7,7 +8,7 @@ const existsSync = require('exists-sync');
 const fastbootTransform = require('fastboot-transform');
 
 module.exports = {
-  name: require('./package').name,
+  name: 'ember-plupload',
 
   included: function (app) {
     this._super.included(app);
